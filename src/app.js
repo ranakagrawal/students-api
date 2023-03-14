@@ -11,16 +11,28 @@ app.use(express.json());
 //     res.send("Hello from the backend")
 // });
 
-app.post("/students",(req,res)=>{
-    console.log(req.body);
-    const user = new Student(req.body);
+// app.post("/students",(req,res)=>{
+//     console.log(req.body);
+//     const user = new Student(req.body);
     
-    user.save().then(()=>{
-        res.status(201).send(user);
-    }).catch((e)=>{
-        res.status(400).send(e);
-    });
-});
+//     user.save().then(()=>{
+//         res.status(201).send(user);
+//     }).catch((e)=>{
+//         res.status(400).send(e);
+//     });
+// });
+
+app.post("/students",async(req,res)=>{
+    try {
+        const user = new Student(req.body);
+        const createUser = await user.save();
+        res.status(201).send(createUser);
+    }    
+
+    catch (error) {
+        res.status(400).send(error)
+    }
+})
 
 app.listen(port,()=>{
     console.log(`Connection successful at ${port}`)
